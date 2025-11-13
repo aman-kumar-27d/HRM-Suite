@@ -26,14 +26,13 @@ End-to-end HR & Payroll platform built with FastAPI, MongoDB, React, Tailwind, a
 
 ## API (MVP)
 - `GET /health`
-- Employees:
-  - `GET /api/v1/employees/`
-  - `POST /api/v1/employees/`
-  - `GET /api/v1/employees/{id}`
-  - `PUT /api/v1/employees/{id}`
-  - `DELETE /api/v1/employees/{id}`
+- Employees (MongoDB):
+  - `GET /api/v1/employees/` → list all employees
+  - `POST /api/v1/employees/` → create employee
+  - `GET /api/v1/employees/{id}` → fetch by id (ObjectId string)
+  - `PUT /api/v1/employees/{id}` → update fields
+  - `DELETE /api/v1/employees/{id}` → remove employee
 
 ## Development Notes
 - Minimal dependencies are used intentionally. Charts/PDF generation planned for later.
 - Future: authentication (email/Gmail), real payout providers, richer reports.
-

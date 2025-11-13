@@ -4,7 +4,7 @@ from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
 from starlette.requests import Request
 
-from ..schemas.employee import EmployeeCreate, EmployeeUpdate, EmployeeOut
+from ...schemas.employee import EmployeeCreate, EmployeeUpdate, EmployeeOut
 
 
 router = APIRouter(prefix="/api/v1/employees", tags=["employees"])
@@ -74,4 +74,3 @@ async def delete_employee(id: str, db=Depends(get_db)):
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Employee not found")
     return {"deleted": True}
-
