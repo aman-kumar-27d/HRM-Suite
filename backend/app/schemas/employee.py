@@ -8,7 +8,7 @@ class EmployeeBase(BaseModel):
     phone: Optional[str] = None
     department_id: Optional[str] = None
     role_id: Optional[str] = None
-    doj: Optional[str] = None  # ISO date string
+    doj: Optional[str] = None
     status: Optional[str] = Field(default="active")
     base_salary: Optional[float] = None
     bank_account_id: Optional[str] = None
@@ -35,4 +35,3 @@ class EmployeeOut(EmployeeBase):
 
     class Config:
         populate_by_name = True
-

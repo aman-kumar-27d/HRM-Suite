@@ -1,4 +1,5 @@
 from typing import List
+import asyncio
 
 from bson import ObjectId
 from fastapi import APIRouter, Depends, HTTPException
@@ -19,10 +20,10 @@ def get_db(request: Request):
 
 @router.get("/", response_model=List[EmployeeOut])
 async def list_employees(db=Depends(get_db)):
-    cursor = db.employees.find({})
+    docs = await asyncio.to_thread(lambda: list(db.employees.find({})))
     items = []
-    async for doc in cursor:
-        doc["_id"] = str(doc["_id"])  # serialize ObjectId
+    for doc in docs:
+        doc["_id"] = str(doc["_id"]) 
         items.append(EmployeeOut.model_validate(doc))
     return items
 
@@ -30,9 +31,9 @@ async def list_employees(db=Depends(get_db)):
 @router.post("/", response_model=EmployeeOut)
 async def create_employee(payload: EmployeeCreate, db=Depends(get_db)):
     doc = payload.model_dump()
-    res = await db.employees.insert_one(doc)
-    saved = await db.employees.find_one({"_id": res.inserted_id})
-    saved["_id"] = str(saved["_id"])  # serialize
+    res = await asyncio.to_thread(lambda: db.employees.insert_one(doc))
+    saved = await asyncio.to_thread(lambda: db.employees.find_one({"_id": res.inserted_id}))
+    saved["_id"] = str(saved["_id"]) 
     return EmployeeOut.model_validate(saved)
 
 
@@ -42,10 +43,10 @@ async def get_employee(id: str, db=Depends(get_db)):
         oid = ObjectId(id)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid id")
-    doc = await db.employees.find_one({"_id": oid})
+    doc = await asyncio.to_thread(lambda: db.employees.find_one({"_id": oid}))
     if not doc:
         raise HTTPException(status_code=404, detail="Employee not found")
-    doc["_id"] = str(doc["_id"])  # serialize
+    doc["_id"] = str(doc["_id"]) 
     return EmployeeOut.model_validate(doc)
 
 
@@ -56,11 +57,11 @@ async def update_employee(id: str, payload: EmployeeUpdate, db=Depends(get_db)):
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid id")
     update_doc = {k: v for k, v in payload.model_dump(exclude_unset=True).items()}
-    res = await db.employees.update_one({"_id": oid}, {"$set": update_doc})
+    res = await asyncio.to_thread(lambda: db.employees.update_one({"_id": oid}, {"$set": update_doc}))
     if res.matched_count == 0:
         raise HTTPException(status_code=404, detail="Employee not found")
-    doc = await db.employees.find_one({"_id": oid})
-    doc["_id"] = str(doc["_id"])  # serialize
+    doc = await asyncio.to_thread(lambda: db.employees.find_one({"_id": oid}))
+    doc["_id"] = str(doc["_id"]) 
     return EmployeeOut.model_validate(doc)
 
 
@@ -70,7 +71,7 @@ async def delete_employee(id: str, db=Depends(get_db)):
         oid = ObjectId(id)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid id")
-    res = await db.employees.delete_one({"_id": oid})
+    res = await asyncio.to_thread(lambda: db.employees.delete_one({"_id": oid}))
     if res.deleted_count == 0:
         raise HTTPException(status_code=404, detail="Employee not found")
     return {"deleted": True}
