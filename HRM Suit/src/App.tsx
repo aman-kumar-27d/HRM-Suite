@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import './index.css'
 
-function App() {
+export default function App() {
   const [dark, setDark] = useState<boolean>(document.documentElement.classList.contains('dark'))
   useEffect(() => {
     if (dark) {
@@ -34,7 +33,7 @@ function App() {
             Onboarding to payouts, reports and insights.
           </p>
           <div className="mt-10 flex gap-4 justify-center">
-            <a className="px-5 py-2 rounded bg-brand-600 text-white" href="#hr">Go to HR</a>
+            <a className="px-5 py-2 rounded bg-indigo-600 text-white" href="#hr">Go to HR</a>
             <a className="px-5 py-2 rounded bg-purple-600 text-white" href="#payroll">Run Payroll</a>
             <a className="px-5 py-2 rounded bg-gray-900 text-white dark:bg-gray-100 dark:text-black" href="#reports">View Reports</a>
           </div>
@@ -44,4 +43,3 @@ function App() {
   )
 }
 
-export default App

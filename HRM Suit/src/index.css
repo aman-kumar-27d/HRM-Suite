@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+:root {
+  color-scheme: light dark;
+}
+
+html, body, #root { height: 100%; }
+
+.transition-theme {
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
