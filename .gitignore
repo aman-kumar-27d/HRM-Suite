@@ -1,0 +1,37 @@
+# Environments
+.env
+.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage/
+
+# Virtual env
+.venv/
+venv/
+ENV/
+
+# Node/Frontend
+node_modules/
+dist/
+build/
+.parcel-cache/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs & temp
+*.log
+*.tmp
+
+# Trae artifacts
+.trae/
